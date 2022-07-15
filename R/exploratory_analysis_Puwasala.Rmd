@@ -1,5 +1,17 @@
-library(tidyverse)
+---
+title: "Exploratory analysis"
+author: "Puwasala Gamakumara"
+date: "2022-07-14"
+output: html_document
+---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+```{r prep_data}
 train_data <- read.csv(file = here::here("Data", "train.csv"))
 test_data <- read.csv(file = here::here("Data", "test.csv"))
 
@@ -20,39 +32,105 @@ train_data_sub <- train_data_sub %>%
          TotRmsAbvGrd = factor(TotRmsAbvGrd),
          Fireplaces = factor(Fireplaces))
 
+
 predictors <- names(train_data_sub) 
 predictors <- predictors[!predictors %in% c("SalePrice")]
 
 dependent <- "SalePrice"
+```
 
+### Visualising data
+
+```{r var_set1, out.width='100%'}
 train_data_sub %>% 
   select({{dependent}}, all_of(predictors[1:5])) %>% 
   GGally::ggpairs()
+
+
+```
+
+Heating, HeatingQC, CantralAir, Electrical and 1stFlrSF are showing some relationship with the SalePrice
+
+
+```{r var_set2, out.width='100%'}
 
 train_data_sub %>% 
   select({{dependent}}, all_of(predictors[6:10])) %>% 
   GGally::ggpairs()
 
+
+```
+
+2ndFlrSF, GrLivArea, BsmtFullBath, BsmtHalfBath are important
+
+```{r var_set3, out.width='100%'}
+
+
 train_data_sub %>% 
   select({{dependent}}, all_of(predictors[11:15])) %>% 
   GGally::ggpairs()
+
+
+```
+
+FullBath, HalfBath, BedroomAbvGr, KitchenQual are important
+
+```{r var_set4, out.width='100%'}
+
 
 train_data_sub %>% 
   select({{dependent}}, all_of(predictors[16:20])) %>% 
   GGally::ggpairs()
 
+
+```
+
+TotRmsAbvGrd, Fireplaces, FireplaceQu, GarageType are important
+
+```{r var_set15, out.width='100%'}
+
+
 train_data_sub %>% 
   select({{dependent}}, all_of(predictors[21:25])) %>% 
   GGally::ggpairs()
+
+
+```
+
+GarageFinish, GarageCars, GarageArea are important
+
+```{r var_set6, out.width='100%'}
+
 
 train_data_sub %>% 
   select({{dependent}}, all_of(predictors[26:30])) %>% 
   GGally::ggpairs()
 
+
+```
+
+WoodDeckSF is important
+
+
+```{r var_set7, out.width='100%'}
+
+
 train_data_sub %>% 
   select({{dependent}}, all_of(predictors[31:35])) %>% 
   GGally::ggpairs()
 
+
+```
+
+
+PoolQC is important
+
+```{r var_set8, out.width='100%'}
+
+
 train_data_sub %>% 
   select({{dependent}}, all_of(predictors[36:40])) %>% 
   GGally::ggpairs()
+```
+
+MoSold, YrSold, SaleType are important
