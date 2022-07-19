@@ -1,0 +1,135 @@
+---
+title: "Exploratory analysis"
+author: "Nirodha Epasinghe"
+output: html_document
+date: '2022-07-15'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+```{r prep_data}
+train_data <- read.csv(file = here::here("Data", "train.csv"))
+test_data <- read.csv(file = here::here("Data", "test.csv"))
+
+myvars <- names(train_data)[c(1:38, 81)]
+
+train_data_sub <- train_data %>% 
+  select(all_of(myvars))
+
+# select only factors
+train_data_sub[sapply(train_data_sub, is.character)] <- lapply(train_data_sub[
+  sapply(train_data_sub, is.character)], as.factor)
+
+# Select only numeric variables
+train_data_int <- train_data_sub %>% 
+  select_if(~class(.) == 'integer')
+
+predictors <- names(train_data_sub) 
+predictors <- predictors[!predictors %in% c("SalePrice")]
+
+dependent <- "SalePrice"
+```
+
+### Visualising data
+
+```{r var_set1, out.width='100%'}
+train_data_sub %>% 
+  select({{dependent}}, all_of(predictors[1:5])) %>% 
+  GGally::ggpairs()
+
+
+```
+
+MSZoning, LotFrontage and LotArea are showing some relationship with the SalePrice
+
+
+```{r var_set2, out.width='100%'}
+
+train_data_sub %>% 
+  select({{dependent}}, all_of(predictors[6:9])) %>% 
+  GGally::ggpairs()
+
+
+```
+
+Street, Alley, LotShape and LandContour are important
+
+```{r var_set3, out.width='100%'}
+
+
+train_data_sub %>% 
+  select({{dependent}}, all_of(predictors[10:12])) %>% 
+  GGally::ggpairs()
+
+
+```
+
+Utilities, LotConfig, LandSlope are important
+
+```{r var_set4, out.width='100%'}
+
+
+train_data_sub %>% 
+  select({{dependent}}, all_of(predictors[14:18])) %>% 
+  GGally::ggpairs()
+
+
+```
+
+Condition1, Condition2, BldgType, HouseStyle are important
+
+```{r var_set15, out.width='100%'}
+
+
+train_data_sub %>% 
+  select({{dependent}}, all_of(predictors[19:23])) %>% 
+  GGally::ggpairs()
+
+
+```
+YearBuilt, YearRemodAdd, RoofStyle, RoofMatl are important
+
+```{r var_set6, out.width='100%'}
+
+
+train_data_sub %>% 
+  select({{dependent}}, all_of(predictors[26:29])) %>% 
+  GGally::ggpairs()
+
+
+```
+
+ExterQual, ExterCond are important
+
+
+```{r var_set7, out.width='100%'}
+
+
+train_data_sub %>% 
+  select({{dependent}}, all_of(predictors[30:34])) %>% 
+  GGally::ggpairs()
+
+
+```
+
+
+Foundation, BsmtQual, BsmtCond, BsmtExposure, BsmtFinType1 are important
+
+```{r var_set8, out.width='100%'}
+
+
+train_data_sub %>% 
+  select({{dependent}}, all_of(predictors[35:38])) %>% 
+  GGally::ggpairs()
+```
+
+BsmtUnfSF is important. 
